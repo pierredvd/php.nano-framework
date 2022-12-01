@@ -1,0 +1,43 @@
+body:after{
+    content: '';
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0px 10px;
+    color: #444444;
+    font-size: 12px;
+    background-color: #ffffff;
+    border: solid 1px #444444;
+}
+
+/** LARGE DESKTOP **/
+@media(min-width: 1201px){
+    body:after{ content: 'Large desktop'; }
+}
+
+/** DESKTOP **/
+@media(min-width: 993px) and (max-width: 1200px){
+    body:after{ content: 'Desktop'; }
+}
+
+/** TABLET LANDSCAPE **/
+@media(min-width: 481px) and (max-width: 992px) and (orientation: landscape){
+    body:after{ content: 'Tablet landscape'; }
+}
+
+/** TABLET PORTRAIT **/
+@media(min-width: 481px) and (max-width: 992px) and (orientation: portrait){
+    body:after{ content: 'Tablet portrait'; }
+}
+
+/** MOBILE LANDSCAPE **/
+@media(max-width: 480px) and (orientation: landscape){
+    body:after{ content: 'Mobile landscape'; }
+}
+
+/** MOBILE PORTRAIT **/
+@media(max-width: 480px) and (orientation: portrait){
+    body:after{ content: 'Mobile portrait'; }
+}

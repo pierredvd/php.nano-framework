@@ -1,0 +1,91 @@
+@import "tool/responsiveviewer.less";
+@import "mixin/crossbrowser.less";
+
+body{
+    background-color: #f0f0f0;
+    padding: 0px;
+    margin: 0px;
+    font-family: Arial;
+    font-size: 12px;
+}
+.structure{
+    display: block;
+    padding: 20px 0px 20px 20px;
+    max-width: 1100px;
+    margin: 0px auto;
+    overflow: hidden;
+    clear: both;
+}
+h1{
+    background-color: #444444;
+    color: #f0f0f0;
+    margin: 0px;
+    padding: 20px;
+}
+.title{
+    display: block;
+    clear: both;
+    border-bottom: dotted 1px #666666;
+    margin: 20px 0px 10px 0px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+p{
+    display: block;
+    padding: 10px 0px;
+    margin: 0px;  
+    clear: both;  
+}
+code{
+    &{
+        display: block;
+        background-color: #1e1e1e;
+        color: #f0f0f0;
+        padding: 10px 20px;
+        .border-radius(5px);
+    }
+    .beacon{    color: #46879c; }
+    .command{   color: #a586a1; }
+    .comment{   color: #228815; }
+    .string{    color: #ad9178; }
+    .boolean{   color: #46879c; }
+    .number{    color: #85c3a3; }
+    .var{       color: #7cdcfe; }
+}
+.cell{
+    &{
+        display: inline-block;
+        float: left;
+        width: 100%;
+        overflow: hidden;
+        padding-right: 20px;
+        .box-sizing(border-box);
+    }
+    &.cell-1{  width:   8.33%; }
+    &.cell-2{  width:  16.66%; }
+    &.cell-3{  width:  25%;    }
+    &.cell-4{  width:  33.33%  }
+    &.cell-5{  width:  41.66%; }
+    &.cell-6{  width:  50%;    }
+    &.cell-7{  width:  58.33%; }
+    &.cell-8{  width:  66.66%; }
+    &.cell-9{  width:  75%;    }
+    &.cell-10{ width:  83.33%; }
+    &.cell-11{ width:  91.66%; }
+    &.cell-12{ width: 100%;    }
+}
+#notfound{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: inline-block;
+    width: 260px;
+    height: 40px;
+    line-height: 20px;
+    padding: 10px 0px;
+    border: solid 1px #666666;
+    text-align: center;
+    margin-top: -30px;
+    margin-left: -130px;
+    .border-radius(5px);
+}

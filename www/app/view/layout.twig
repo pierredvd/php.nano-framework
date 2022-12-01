@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block metatitle %}{% endblock %}</title>
+        <meta name="description"                    content="{% block metadescription %}{% endblock %}" />
+        <meta name="keywords"                       content="{% block metakeyword %}{% endblock %}" />
+        <!--
+        <meta name="language"                       content="" />
+        !-->
+        <meta http-equiv="content-type"             content="text/html; charset=UTF-8" />
+        <meta name="robots"                         content="noindex, no-follow">
+        <meta name="viewport"                       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable"   content="yes" />
+        <link rel="stylesheet" href="{{ basepath() }}/asset/css/admin.css" />
+        {% block style %}{% endblock %}
+    </head>
+    <body>
+        <!-- layout !-->
+        {% block content %}{% endblock %}
+        
+        <!-- scripts !-->
+        <script type="text/javascript" src="{{ basepath() }}/asset/js/jquery-1.11.1.min.js"></script>
+        {% block script %}{% endblock %}
+        
+    </body>
+</html>

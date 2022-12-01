@@ -1,0 +1,66 @@
+.box-sizing(@value: content-box){
+    -webkit-box-sizing: @value;
+       -moz-box-sizing: @value;
+        -ms-box-sizing: @value;
+         -o-box-sizing: @value;
+            box-sizing: @value;
+}
+.border-radius(@value: 0px){
+    -webkit-border-radius: @value;
+       -moz-border-radius: @value;
+        -ms-border-radius: @value;
+         -o-border-radius: @value;
+            border-radius: @value;
+    -webkit-background-clip: padding-box;
+       -moz-background-clip: padding;
+	-ms-background-clip: padding-box;
+	 -o-background-clip: padding-box;
+	    background-clip: padding-box;
+}
+.box-shadow(@value: 0px 0px 0px #000000){
+    -webkit-box-shadow: @value;
+       -moz-box-shadow: @value;
+        -ms-box-shadow: @value;
+         -o-box-shadow: @value;
+            box-shadow: @value;
+}
+.vertical-gradient(@topColor: #c0c0c0, @bottomColor: #666666){
+    background: @topColor;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@topColor), color-stop(100%,@bottomColor));
+    background: -webkit-linear-gradient(top,  @topColor 0%,@bottomColor 100%);
+    background:    -moz-linear-gradient(top,  @topColor 0%, @bottomColor 100%);
+    background:     -ms-linear-gradient(top,  @topColor 0%,@bottomColor 100%);
+    background:      -o-linear-gradient(top,  @topColor 0%,@bottomColor 100%);
+    background:         linear-gradient(to bottom,  @topColor 0%,@bottomColor 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@topColor', endColorstr='@bottomColor',GradientType=0 );
+}
+.transition-delay(@value: 0s){
+    -webkit-transition-delay: @value;
+       -moz-transition-delay: @value;
+        -ms-transition-delay: @value;
+         -o-transition-delay: @value;
+            transition-delay: @value;
+}
+.transition-duration(@value: 0s){
+    -webkit-transition-duration: @value;
+       -moz-transition-duration: @value;
+        -ms-transition-duration: @value;
+         -o-transition-duration: @value;
+            transition-duration: @value;
+}
+
+.transform-origin(@value: center center){
+    -webkit-transform-origin: @value;
+       -moz-transform-origin: @value;
+        -ms-transform-origin: @value;
+         -o-transform-origin: @value;
+            transform-origin: @value;    
+}
+.transform(@value: scale(1)){
+    -webkit-transform: @value;
+       -moz-transform: @value;
+        -ms-transform: @value;
+         -o-transform: @value;
+            transform: @value;    
+}
+

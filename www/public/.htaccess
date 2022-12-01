@@ -1,0 +1,15 @@
+DirectoryIndex index.php
+<IfModule mod_headers.c>
+    <FilesMatch ".mp3">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+</IfModule>	
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks -Indexes
+    RewriteEngine on
+    RewriteBase /
+    RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteCond %{REQUEST_URI} !=/index.php
+    RewriteRule .* /index.php
+</IfModule>

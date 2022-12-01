@@ -1,0 +1,293 @@
+{% extends "layout.twig" %}
+{% block metatitle          %}Mon titre{% endblock %}
+{% block metadescription    %}Ma description{% endblock %}
+{% block metakeyword        %}{% endblock %}
+{% block style              %}{% endblock %}
+{% block content            %}
+    <h1>Nano framework</h1>
+    <div class="structure">
+        <span class="title">Nano MVC ({{ translate('lang') }})</span>
+        <span class="cell cell-4">
+            <ul>
+                <li>Configuration</li>
+                <li>Erreur et logs</li>
+                <li>Routage, rewrite, controlleur</li>
+                <li>Modèle de données</li>
+                <li>Vues, multilingue</li>
+                <li>Cache, twig, Less</li>
+                <li>Mail</li>
+            </ul>
+        </span>
+        <span class="cell cell-8">
+            <p>Nano sur {{ basepath() }}</p>
+            <code>
+                <span class="beacon">&lt;?php</span>
+                <br />
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">/**
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;* Nano Mvc
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;*
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;* Necessite PHP 5.3 à 7.2 et le mod_rewrite actif.
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;*
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;* "app/cache", "app/log" et "public/css"
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;* doivent disposer des droits d'ecriture.
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;*/</span>
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;run();
+                <br />
+                <br /><span class="beacon">?&gt;</span>
+            </code>
+        </span>
+        <span class="title">Configuration</span>
+        <span class="cell cell-6">
+            <p>La configuration est uniquement déclarée sous forme de fichier.
+                Vous la trouverez dans votre dossier de configuration de l'application
+                "app/config"
+                <br /><br />
+                La configuration minimale requiert les fichiers <i>"global.php"</i> et <i>"route.php"</i>.
+                <br /><br />
+                Chaque fichier de configuration peut etre surchargé avec la configuration d'un
+                domaine. Les fichiers ne sont pas remplacés, mais fusionné en faveur de la
+                configuration de domaine.
+                <br /><br />
+                Tout autre fichier supplementaire sera chargé automatiquement, à la
+                demande.
+            </p>
+        </span>
+        <span class="cell cell-6">
+            <p>
+                Pour récuperer manuellement un parametre de configuration depuis un
+                fichier, vous pouvez utiliser la commande suivante:
+            </p>
+            <code>\Nano\Config::get(<span class="string">'global.error.show'</span>);</code>
+            <p>
+                La nom du parametre de configuration s'articule de manière uniforme, le nom
+                du fichier de configuration, suivi des nom de parametres de chaque niveau de
+                tableau défini, le tout séparé par des points. Si aucune valeur ne correspond
+                au paramètre demandé, la commande retournera "null".
+            </p>
+        </span>
+        <span class="title">Erreurs et log</span>
+        <p>
+            Le gestionnaire d'erreur est de log son par defaut géré de manière automatique, configurable via le fichier de configurarion "app/config/global.php"
+        </p>
+        <code>
+            <span class="command">return</span> [
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'error'</span> => [
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'show'</span>&nbsp; => <span class="boolean">true</span>, <span class="comment">// Afficher les erreurs</span>
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'log'</span>&nbsp;&nbsp; => <span class="boolean">true</span>&nbsp; <span class="comment">// Faire un trace log automatique lors d'une erreur</span>
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;],
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;[...]
+            <br />];
+        </code>
+        <p>
+            Il est egalement possible de demander une trace en log manuellement à partir de la commande suivante :
+        </p>
+        <code>
+            \Nano\Log::trace(<span class="string">'mon message'</span>);
+        </code>
+        <p>
+            Les logs sont ecrits automatiquements sur le chemin "app/log/[année]/[mois]/[jour].php"
+        </p>
+        <span class="title">Routage, rewriting, controlleur</span>
+        <p>
+            Pour des question pratiques et de simplicité, les mecaniques de routages ont été simplfiés.
+            Les routes sont definies dans le fichier de configuration <i>"app/config/route.php"</i>
+        </p>
+        <code>
+            <span class="command">return</span> [
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'__404__'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => <span class="string">'e404/index'</span>,
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'/'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => <span class="string">'home/index'</span>,
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'/rewrite-([0-9a-z]+)'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => <span class="string">'home/index'</span>,
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'/rewrite-([0-9a-z]+)-([0-9a-z]+)'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => <span class="string">'home/index'</span>,
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'/rewrite-([0-9a-z]+)-([0-9a-z]+)-([0-9a-z]+)'</span> => <span class="string">'home/index'</span>
+            <br />];
+        </code>
+        <p>
+            La routage se limite à une liste de clés/valeurs. La route à pour clé une expression regulière correspondante aux regles de rewrite. La valeur de la route
+            correspond au chemin d'accès au controller, terminé par le nom de la methode désirée.
+            <br /><br />
+            Les routes encadrés par des "__", tel que "__404__" correspond à des routes spéciales qui ne seront pas interprétées comme des expression regulières.
+            <br /><br />
+            Pour toute les autres routes, les parametres de rewrites sont automatiquement injecté dans leur ordre d'apparition vers la methode de destination du routage
+            comme on peut le voir dans le controlleur utilisé pour la page en cours.
+        </p>
+        <code>
+            <span class="command">class</span> Home{
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">public function</span> index(<span class="var">$param1</span>=<span class="command">null</span>, <span class="var">$param2</span>=<span class="command">null</span>, <span class="var">$param3</span>=<span class="command">null</span>){
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">return new</span> \Nano\View\Twig(<span class="string">'index.twig'</span>, [<span class="string">'p1'</span>=><span class="var">$param1</span>, <span class="string">'p2'</span>=><span class="var">$param2</span>, <span class="string">'p3'</span>=><span class="var">$param3</span>], <span class="number">200</span>, []);
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;}
+            <br />}
+        </code>
+        <p>
+            ! Attention: Afin que le routage puisse fonction en presence ou
+            absence des parametres de routages, les parametres definis
+            dans la methode du controlleur devront tous disposer d'une
+            valeur par defaut (ici "null")
+        </p>
+        <span class="cell cell-6">
+            <code>
+                <span class="command">class</span> Home{
+                <br /><br />
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">public function</span> get_index(){
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">return new</span>\Nano\View\Twig(<span class="string">'index.twig'</span>, [], <span class="number">200</span>, []);
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;}
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">public function</span> post_index(){
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">return new</span> \Nano\View\Twig(<span class="string">'index.twig'</span>, [], <span class="number">200</span>, []);
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;}
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">public function</span> index(){
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">return new</span> \Nano\View\Twig(<span class="string">'index.twig'</span>, [], <span class="number">200</span>, []);
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;}
+                <br /><br />
+                <br />}
+            </code>
+        </span>
+        <span class="cell cell-6">
+            <p>
+                Il est egalement possible implicitement de definir le routage à
+                partir de la methode http utilisée, via le controller, comme sur
+                l'exemple suivant :
+                <br /><br />
+                Dans le cas ci-contre, le routeur cherchera en priorité une
+                methode [MethodeHttp]_[MethodeController], et sinon
+                [MethodeController].
+                <br /><br />
+                Dans le cas présent ou la page est accédée via une methode
+                HTTP "GET", la methode "get_index" sera executée, ou en son
+                absence, la methode "index".
+            </p>
+        </span>
+        <div style="clear: both"></div>
+        <span class="title">Modèle de données</span>
+        <p>
+            La configuration des connexion de base de données sont dans le fichier <i>"app/config/database.php"</i>
+        </p>
+        <code>
+            <span class="command">return</span> [
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'connexion1'</span> => [
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'dsn'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => <span class="string">'mysql:host=localhost;dbname=Nano'</span>,
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'user'</span>&nbsp;&nbsp;&nbsp;&nbsp; => <span class="string">'root'</span>,
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'password'</span> => <span class="string">''</span>,
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'timeout'</span>&nbsp; => <span class="number">3</span>
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;]
+            <br />];
+        </code>
+        <p>
+            Il est possible de definir autant de connexion que l'on souhaite, elle ne seront exploité qu'a la demande.
+            <br /><br />
+            Une fois les connexion definies, il est possible de créer des abstractions de tables dans le dossier "app/model", afin de regrouper toute les manipulations de
+            données dans un même fichier, sous la forme suivante :        
+        </p>
+        <code>
+            <span class="command">class</span> MyTable <span class="command">extends</span> \Nano\Model{
+            <br />
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Nom de la connexion utilisé (defini en configuration)</span>
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">protected static</span> <span class="var">$connexion</span> = <span class="string">'connexion1'</span>;
+            <br />
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">public static function</span> getAll(){
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">return static</span>::query(<span class="string">'SELECT * FROM mytable'</span>);
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;}
+            <br />}
+        </code>
+        <p>Enfin, cette abstraction est exploitable depuis n'importe quel controlleur :</p>
+        <code>
+            <span class="command">namespace</span> App\Controller;
+            <br />
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">use</span> \App\Model\MyTable <span class="command">as</span> MyTableModel;
+            <br />
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">class</span> Home{
+            <br />
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">public function</span> index(){
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$data</span> = MyTableModel::getAll();
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="command">return new</span> \Nano\View\Twig(<span class="string">'index.twig'</span>, [<span class="string">'data'</span> => <span class="var">$data</span>], <span class="number">200</span>, []);
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+            <br />
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;}
+            <br />
+            <br />}
+        </code>    
+        <span class="title">Vues, multilangue</span>
+        <p>
+            Nano propose 3 type de rendu de vues, mise à disposition de manière natives :
+        </p>
+        <ul>
+            <li>Rendu de flux de données : \Nano\View</li>
+            <li>Rendu de JSON : \Nano\View\Json</li>
+            <li>Rendu de Vues Twig : \Nano\View\Twig</li>
+        </ul>
+        <p>
+            Il est fortement conseillé d'exploité les vues twig pour les sorties html afin de profiter de la prise en charge du cache natif, ainsi que pour les facilités de mise en
+            formes, et des fonctionnalités supplementaires proposées, comme les fonctions suivantes :
+        </p>
+        <ul>
+            <li>&#123;&#123; basepath() &#125;&#125; : Retourne le domaine courant (utilisé pour former les url absolues des assets</li>
+            <li>&#123;&#123; translate('clé.de.traduction') &#125;&#125; : Traduit le mot clé fourni selon la langue et les fichier de traduction fournis.</li>
+            <li>&#123;&#123; config('clé.de.configuration') &#125;&#125; : Retourne la configuration associée.</li>
+        </ul>
+        <p>
+            Les traductions sont stockées sous forme de fichier dans le dossier "app/lang/", chaque fichier porte les 2 premières lettres de la locale de la langue qu'ils
+            representent. L'appel aux traductions suivent le formalisme des fichiers de configuration :
+        </p>
+        <code>
+        <span class="command">return</span> [
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'lang'</span>&nbsp; => <span class="string">'Français'</span>,
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'ui'</span>&nbsp;&nbsp;&nbsp; => [
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'title'</span> => <span class="string">'Mon titre'</span>
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;]
+        <br />];        
+        </code>
+        <p>
+            Les traduction et les configurations sont appelable alors depuis un controlleur ou une vue
+        </p>
+        <span class="cell cell-6">
+            <code>
+                <span class="comment">// Dans un controlleur</span>
+                <br />\Nano\Lang::translate(<span class="string">'ui.title'</span>);
+                <br />\Nano\Config::get(<span class="string">'global.lang.default'</span>);
+            </code>
+        </span>
+        <span class="cell cell-6">
+            <code>
+                <span class="comment">&lt;!-- Dans une vue !--&gt;</span>
+                <br />&#123;&#123; translate(<span class="string">'ui.title'</span>); &#125;&#125;
+                <br />&#123;&#123; config(<span class="string">'global.lang.default'</span>); &#125;&#125;           
+            </code>
+        </span>
+        <p>
+            La langue est detectée par defaut via le parametrage du navigateur, sinon reviens à la langue par defaut.
+            En cas de changement de langue, elle peut être forcé via le controlleur :        
+        </p>
+        <code>
+            <span class="comment">// Dans un controlleur</span>
+            <br />\Nano\Lang::setLang(<span class="string">'fr'</span>);
+        </code>
+        <span class="title">Cache, Twig, Less, compilation</span>
+        <p>
+            Nano supporte l'utilisation de la librairie <b>Less</b> et <b>Twig</b> pour faciliter l'exploitation et la maintenance de feuille de style et des templates.
+            <br /><br />
+            Les fichiers <b>Twig</b> (.twig) sont directement appelable en temps que vue depuis le controlleur. La gestion du cache se fait depuis le fichier de configuration de
+            l'application "app/config/global.php"
+            <br /><br />
+            Les fichiers <b>Less</b> (.less) sont regroupés dans les assets "public/asset/less/"
+            <br />Afin de spécifier au système les fichiers less à compiler, il faut les renseigner dans le fichier de configuration de l'application "app/config/global.php"
+            <br /><br />
+            La gestion de tous les <b>caches</b> sont géléralisé dans une seule variable en fichier de configuration de l'application "app/config/global.php"
+        </p>
+        <code>
+        <span class="string">'view'</span> => [
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'cache'</span> => <span class="boolean">false</span>, <span class="comment">// Activer le cache twig et less</span>
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'less'</span> => [
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Liste les fichiers less à compiler
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// (gauche) Le chemin du fichier less en absolu à partir du dossier public/asset/less
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// (droite) Le chemin du fichier css en absolu à partir du dossier public/asset/css</span>
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'home/home.less'</span> => <span class="string">'home.css'</span>,
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;]
+        <br />],
+        </code>
+        <p>
+            N.B. Less ayant encore un bug sur les "@import" sur un dossier parent, les chemins d'accès associés à la commande "@import"
+            sont attendu en absolue à partir du dossier racine "public/asset/less/"
+        </p>
+    </div>
+{% endblock %}
+{% block script             %}
+    
+{% endblock %}
