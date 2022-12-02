@@ -1,7 +1,9 @@
-!**.gitkeep
 /www/.autotest
 /www/public/asset/less/css/*
 /www/app/cache/local/*
 /www/app/cache/twig/*
 /www/app/public/asset/css/*
+/www/access.log
+/www/error.log
 /persistant_data/*
+!**/.gitkeep
